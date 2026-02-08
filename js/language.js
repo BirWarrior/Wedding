@@ -20,7 +20,7 @@ const translations = {
         
         // RSVP Section
         rsvpTitle: 'RSVP',
-        rsvpSubtitle: 'Bitte antworte bis zum 30. Juni 2026',
+        rsvpSubtitle: 'Bitte antworte bis zum 15. Juni 2026',
         
         // Form Labels
         nameLabel: 'Dein Name',
@@ -73,7 +73,7 @@ const translations = {
         
         // RSVP Section
         rsvpTitle: 'RSVP',
-        rsvpSubtitle: 'Please respond by June 30, 2026',
+        rsvpSubtitle: 'Please respond by June 15, 2026',
         
         // Form Labels
         nameLabel: 'Your Name',
@@ -126,7 +126,7 @@ const translations = {
         
         // RSVP Section
         rsvpTitle: 'OSA',
-        rsvpSubtitle: 'Vänligen svara senast 30 juni 2026',
+        rsvpSubtitle: 'Vänligen svara senast 15 juni 2026',
         
         // Form Labels
         nameLabel: 'Ditt Namn',
@@ -161,6 +161,59 @@ const translations = {
         
         // Footer
         footerContact: 'Vid frågor, kontakta oss:'
+    },
+
+    fa: {
+        // Meta
+        pageTitle: 'دعوتنامه عروسی',
+        pageDescription: 'دعوتنامه عروسی آرزو کوهستانی و چابیر اکرامیار - ۱۹ ژوئیه ۲۰۲۶',
+        
+        // Date and Time
+        date: '۱۹ ژوئیه ۲۰۲۶',
+        time: 'ساعت ۱۷:۰۰',
+        
+        // Invitation Text
+        invitationText: 'با کمال افتخار شما را به جشن عروسی خود دعوت می‌کنیم!',
+        locationName: 'Le Royale',
+        locationAddress: 'Hermann-Buck-Weg 9, 22309 Hamburg',
+        
+        // RSVP Section
+        rsvpTitle: 'پاسخ دعوت',
+        rsvpSubtitle: 'لطفاً تا ۱۵ ژوئن ۲۰۲۶ پاسخ دهید',
+        
+        // Form Labels
+        nameLabel: 'نام شما',
+        namePlaceholder: 'نام و نام خانوادگی',
+        attendingLabel: 'آیا شرکت می‌کنید؟',
+        btnYes: 'بله، شرکت می‌کنم',
+        btnNo: 'متأسفانه نه',
+        guestCountLabel: 'تعداد مهمانان',
+        person1: '۱ نفر',
+        person2: '۲ نفر',
+        person3: '۳ نفر',
+        person4: '۴ نفر',
+        submitBtn: 'ارسال پاسخ',
+        sending: 'در حال ارسال...',
+        
+        // Thank You Messages
+        thankYouTitle: 'با تشکر!',
+        thankYouDefault: 'پاسخ شما ثبت شد.',
+        thankYouAlreadySubmitted: 'شما قبلاً پاسخ داده‌اید.',
+        thankYouHoneypot: 'با تشکر از پاسخ شما!',
+        thankYouYesSingle: 'عالی! منتظر دیدار شما هستیم!',
+        thankYouYesMultiple: 'عالی! منتظر دیدار شما هستیم!',
+        thankYouNo: 'متأسفیم که نمی‌توانید شرکت کنید.',
+        subtitleYesSingle: 'خوشحالیم که می‌آیید!',
+        subtitleYesMultiple: 'خوشحالیم که می‌آیید!',
+        subtitleNo: 'دلتنگ شما خواهیم شد!',
+        
+        // Error Messages
+        errorNameRequired: 'لطفاً نام خود را وارد کنید.',
+        errorResponseRequired: 'لطفاً انتخاب کنید که آیا شرکت می‌کنید.',
+        errorSubmission: 'خطایی رخ داد. لطفاً بعداً دوباره تلاش کنید.',
+        
+        // Footer
+        footerContact: 'برای سوالات با ما تماس بگیرید:'
     }
 };
 
@@ -182,6 +235,9 @@ function switchLanguage(lang) {
     
     // Update HTML lang attribute
     document.documentElement.lang = lang;
+    
+    // Handle RTL for Persian
+    document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
     
     // Update page title and meta
     document.title = t('pageTitle');
