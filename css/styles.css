@@ -79,7 +79,6 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     
     /* Fallback gradient if no image */
     background-color: var(--color-cream);
