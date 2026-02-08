@@ -57,6 +57,9 @@ function doPost(e) {
       JSON.stringify(data)                // Column E: Raw data (for debugging)
     ];
     
+    // Send email notification
+    sendNotificationEmail(data, existingRow > 0);
+    
     if (existingRow > 0) {
       // Update existing row instead of adding duplicate
       const range = sheet.getRange(existingRow, 1, 1, rowData.length);
@@ -192,4 +195,46 @@ function testPost() {
   
   const result = doPost(testEvent);
   console.log('Test result:', result.getContent());
+}
+
+// ========================================
+// Email Notification
+// ========================================
+
+// IMPORTANT: Replace with your email address(es)
+// For multiple recipients, separate with comma: 'email1@gmail.com, email2@gmail.com'
+const NOTIFICATION_EMAIL = 'chabixxx56@gmail.com';
+
+/**
+ * Send email notification when someone RSVPs
+ */
+function sendNotificationEmail(data, isUpdate) {
+  const subject = isUpdate 
+    ? `💒 RSVP Update: ${data.name}` 
+    : `💒 New RSVP: ${data.name}`;
+  
+  const attending = data.rsvp === 'yes';
+  const guestCount = data.guestCount || 1;
+  
+  let body = `
+New RSVP Response Received!
+
+Name: ${data.name}
+Response: ${attending ? '✅ Yes, attending!' : '❌ No, cannot attend'}
+${attending ? `Number of Guests: ${guestCount}` : ''}
+${isUpdate ? '\n⚠️ This is an updated response.' : ''}
+
+---
+Timestamp: ${new Date().toLocaleString('en-US')}
+  `;
+  
+  try {
+    MailApp.sendEmail({
+      to: NOTIFICATION_EMAIL,
+      subject: subject,
+      body: body
+    });
+  } catch (e) {
+    console.error('Email notification failed:', e);
+  }
 }
