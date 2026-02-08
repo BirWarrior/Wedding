@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wedding invitation for Arezoo Kohestani & Chabir Akramyar - 15. August 2026">
+    <title>Wedding Invitation</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Hero Section with Background Image -->
+    <section class="hero" id="hero">
+        <!-- You can add your own image: replace the background-image in CSS or add an <img> here -->
+        <div class="hero-overlay"></div>
+        
+        <!-- Invitation Card -->
+        <div class="invitation-card">
+            <div class="card-content">
+                <!-- Couple Names -->
+                <header class="couple-names">
+                    <h1>
+                        <span class="name">Arezoo Kohestani</span>
+                        <span class="ampersand">&</span>
+                        <span class="name">Chabir Akramyar</span>
+                    </h1>
+                </header>
+                
+                <!-- Wedding Date -->
+                <div class="wedding-date">
+                    <p class="date">19. July 2026</p>
+                    <p class="time">17:00 Uhr</p>
+                </div>
+                
+                <!-- Invitation Text -->
+                <div class="invitation-text">
+                    <p>Wir freuen uns, euch zu unserer Hochzeit einzuladen!</p>
+                    <p class="location">Le Royale <br> Hermann-Buck-Weg 9, 22309 Hamburg</p>
+                </div>
+                
+                <!-- Divider -->
+                <div class="divider"></div>
+                
+                <!-- RSVP Section -->
+                <div class="rsvp-section" id="rsvp-section">
+                    <h2>RSVP</h2>
+                    <p class="rsvp-subtitle">Bitte antworte bis zum 15. Juli 2026</p>
+                    
+                    <!-- RSVP Form -->
+                    <form id="rsvp-form" class="rsvp-form">
+                        <!-- Name Input -->
+                        <div class="form-group">
+                            <label for="guest-name">Dein Name</label>
+                            <input 
+                                type="text" 
+                                id="guest-name" 
+                                name="name" 
+                                required 
+                                placeholder="Vor- und Nachname"
+                                autocomplete="name"
+                            >
+                        </div>
+                        
+                        <!-- RSVP Buttons -->
+                        <div class="form-group">
+                            <label>Kommst du?</label>
+                            <div class="rsvp-buttons">
+                                <button type="button" class="rsvp-btn" id="btn-yes" data-response="yes">
+                                    <span class="btn-icon">✓</span>
+                                    <span>Ja, ich komme</span>
+                                </button>
+                                <button type="button" class="rsvp-btn" id="btn-no" data-response="no">
+                                    <span class="btn-icon">✗</span>
+                                    <span>Leider nicht</span>
+                                </button>
+                            </div>
+                            <input type="hidden" id="rsvp-response" name="rsvp" required>
+                        </div>
+                        
+                        <!-- Guest Count (visible only when "Yes" is selected) -->
+                        <div class="form-group guest-count-group" id="guest-count-group" style="display: none;">
+                            <label for="guest-count">Anzahl der Gäste</label>
+                            <select id="guest-count" name="guestCount">
+                                <option value="1">1 Person</option>
+                                <option value="2">2 Personen</option>
+                                <option value="3">3 Personen</option>
+                                <option value="4">4 Personen</option>
+                                <option value="5">5 Personen</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Honeypot field (spam protection) -->
+                        <div class="form-group honeypot" aria-hidden="true">
+                            <input type="text" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn" id="submit-btn" disabled>
+                            <span class="btn-text">RSVP absenden</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner"></span>
+                                Wird gesendet...
+                            </span>
+                        </button>
+                        
+                        <!-- Error Message -->
+                        <p class="error-message" id="error-message" style="display: none;"></p>
+                    </form>
+                </div>
+                
+                <!-- Thank You Message (hidden by default) -->
+                <div class="thank-you-section" id="thank-you-section" style="display: none;">
+                    <div class="thank-you-icon" id="thank-you-icon">♥</div>
+                    <h2>Vielen Dank!</h2>
+                    <p class="thank-you-message" id="thank-you-message">
+                        Deine Antwort wurde gespeichert.
+                    </p>
+                    <p class="thank-you-subtitle" id="thank-you-subtitle">Wir freuen uns auf dich!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Bei Fragen erreichst du uns unter: <a href="tel:+491732569421">+49 1732569421</a></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>
