@@ -98,14 +98,71 @@ function findExistingEntry(sheet, normalizedName) {
 }
 
 /**
- * Handles GET requests (for testing)
+ * Handles GET requests - returns RSVP statistics
  */
 function doGet(e) {
-  return createResponse({ 
-    result: 'success', 
-    message: 'Wedding RSVP API is running!',
-    timestamp: new Date().toISOString()
-  });
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    
+    if (!sheet) {
+      return createResponse({ result: 'error', error: 'Sheet not found' });
+    }
+    
+    const lastRow = sheet.getLastRow();
+    
+    // If no data (only header or empty), return zeros
+    if (lastRow < 2) {
+      return createResponse({
+        result: 'success',
+        totalRsvps: 0,
+        yesCount: 0,
+        noCount: 0,
+        yesPercentage: 0,
+        noPercentage: 0,
+        totalGuests: 0,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Get RSVP responses (column C) and guest counts (column D)
+    const rsvpRange = sheet.getRange(2, 3, lastRow - 1, 2);
+    const data = rsvpRange.getValues();
+    
+    let yesCount = 0;
+    let noCount = 0;
+    let totalGuests = 0;
+    
+    data.forEach(row => {
+      const rsvp = row[0].toString().trim();
+      const guestCount = parseInt(row[1]) || 0;
+      
+      if (rsvp === 'Ja') {
+        yesCount++;
+        totalGuests += guestCount;
+      } else if (rsvp === 'Nein') {
+        noCount++;
+      }
+    });
+    
+    const totalRsvps = yesCount + noCount;
+    const yesPercentage = totalRsvps > 0 ? Math.round((yesCount / totalRsvps) * 100) : 0;
+    const noPercentage = totalRsvps > 0 ? Math.round((noCount / totalRsvps) * 100) : 0;
+    
+    return createResponse({
+      result: 'success',
+      totalRsvps: totalRsvps,
+      yesCount: yesCount,
+      noCount: noCount,
+      yesPercentage: yesPercentage,
+      noPercentage: noPercentage,
+      totalGuests: totalGuests,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('Stats Error:', error);
+    return createResponse({ result: 'error', error: error.message });
+  }
 }
 
 /**

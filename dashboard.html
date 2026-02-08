@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding RSVP Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card.total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stat-card.yes {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        .stat-card.no {
+            background: linear-gradient(135deg, #f2709c 0%, #ff9472 100%);
+            color: white;
+        }
+
+        .stat-card.guests {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-subtext {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            margin: 20px 0;
+        }
+
+        .progress-yes {
+            background: linear-gradient(90deg, #56ab2f 0%, #a8e063 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+
+        .progress-no {
+            background: linear-gradient(90deg, #f2709c 0%, #ff9472 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+        }
+
+        .legend-color.yes {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        }
+
+        .legend-color.no {
+            background: linear-gradient(135deg, #f2709c 0%, #ff9472 100%);
+        }
+
+        .refresh-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 40px;
+        }
+
+        .error {
+            background: #ff5252;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .timestamp {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stat-value {
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎉 Wedding RSVP Dashboard</h1>
+            <p class="subtitle">Arezoo & Chabir - 19. Juli 2026</p>
+        </header>
+
+        <div id="loading" class="loading">
+            Loading statistics...
+        </div>
+
+        <div id="error" style="display: none;"></div>
+
+        <div id="dashboard" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card total">
+                    <div class="stat-label">Total RSVPs</div>
+                    <div class="stat-value" id="total-rsvps">0</div>
+                    <div class="stat-subtext">responses received</div>
+                </div>
+
+                <div class="stat-card yes">
+                    <div class="stat-label">Coming</div>
+                    <div class="stat-value" id="yes-count">0</div>
+                    <div class="stat-subtext" id="yes-percentage">0%</div>
+                </div>
+
+                <div class="stat-card no">
+                    <div class="stat-label">Not Coming</div>
+                    <div class="stat-value" id="no-count">0</div>
+                    <div class="stat-subtext" id="no-percentage">0%</div>
+                </div>
+
+                <div class="stat-card guests">
+                    <div class="stat-label">Total Guests</div>
+                    <div class="stat-value" id="total-guests">0</div>
+                    <div class="stat-subtext">attending</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2 style="margin-bottom: 20px; color: #333;">Response Overview</h2>
+                <div class="progress-bar">
+                    <div class="progress-yes" id="progress-yes" style="width: 0%;">
+                        <span id="progress-yes-text"></span>
+                    </div>
+                    <div class="progress-no" id="progress-no" style="width: 0%;">
+                        <span id="progress-no-text"></span>
+                    </div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color yes"></div>
+                        <span>Coming (Ja)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color no"></div>
+                        <span>Not Coming (Nein)</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="refresh-btn" onclick="loadStats()">🔄 Refresh Data</button>
+
+            <div class="timestamp" id="timestamp"></div>
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANT: Replace this URL with your Google Apps Script web app URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5A0d9SD6nQvmLLAKJfEcN9IMb4aX8O2UAVc3NTpI4CpSCDrXvszvyENpFJphyGAOt/exec';
+
+        async function loadStats() {
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const dashboard = document.getElementById('dashboard');
+
+            // Show loading
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            dashboard.style.display = 'none';
+
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+
+                if (data.result === 'error') {
+                    throw new Error(data.error);
+                }
+
+                // Update stats
+                document.getElementById('total-rsvps').textContent = data.totalRsvps;
+                document.getElementById('yes-count').textContent = data.yesCount;
+                document.getElementById('no-count').textContent = data.noCount;
+                document.getElementById('yes-percentage').textContent = data.yesPercentage + '%';
+                document.getElementById('no-percentage').textContent = data.noPercentage + '%';
+                document.getElementById('total-guests').textContent = data.totalGuests;
+
+                // Update progress bar
+                const progressYes = document.getElementById('progress-yes');
+                const progressNo = document.getElementById('progress-no');
+                const progressYesText = document.getElementById('progress-yes-text');
+                const progressNoText = document.getElementById('progress-no-text');
+
+                progressYes.style.width = data.yesPercentage + '%';
+                progressNo.style.width = data.noPercentage + '%';
+                
+                progressYesText.textContent = data.yesPercentage > 10 ? data.yesPercentage + '%' : '';
+                progressNoText.textContent = data.noPercentage > 10 ? data.noPercentage + '%' : '';
+
+                // Update timestamp
+                const timestamp = new Date(data.timestamp);
+                document.getElementById('timestamp').textContent = 
+                    'Last updated: ' + timestamp.toLocaleString('de-DE');
+
+                // Show dashboard
+                loading.style.display = 'none';
+                dashboard.style.display = 'block';
+
+            } catch (err) {
+                console.error('Error loading stats:', err);
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.className = 'error';
+                error.textContent = '❌ Error loading data: ' + err.message + 
+                    '\n\nMake sure you have updated the SCRIPT_URL in this file and redeployed the Google Apps Script.';
+            }
+        }
+
+        // Load stats when page loads
+        loadStats();
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadStats, 30000);
+    </script>
+</body>
+</html>
