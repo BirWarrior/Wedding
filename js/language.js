@@ -33,7 +33,6 @@ const translations = {
         person2: '2 Personen',
         person3: '3 Personen',
         person4: '4 Personen',
-        person5: '5 Personen',
         submitBtn: 'RSVP absenden',
         sending: 'Wird gesendet...',
         
@@ -87,7 +86,6 @@ const translations = {
         person2: '2 People',
         person3: '3 People',
         person4: '4 People',
-        person5: '5 People',
         submitBtn: 'Submit RSVP',
         sending: 'Sending...',
         
@@ -141,7 +139,6 @@ const translations = {
         person2: '2 Personer',
         person3: '3 Personer',
         person4: '4 Personer',
-        person5: '5 Personer',
         submitBtn: 'Skicka OSA',
         sending: 'Skickar...',
         
