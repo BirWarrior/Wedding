@@ -712,3 +712,35 @@ body {
         display: none;
     }
 }
+
+/* ========================================
+   RTL Support (Persian/Farsi)
+   ======================================== */
+
+[dir="rtl"] {
+    font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+}
+
+[dir="rtl"] .language-menu {
+    right: auto;
+    left: var(--spacing-md);
+}
+
+[dir="rtl"] .lang-dropdown {
+    right: auto;
+    left: 0;
+}
+
+[dir="rtl"] .form-group input,
+[dir="rtl"] .form-group select {
+    text-align: right;
+}
+
+[dir="rtl"] .rsvp-buttons {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .footer a {
+    direction: ltr;
+    unicode-bidi: embed;
+}
