@@ -20,7 +20,7 @@ const translations = {
         
         // RSVP Section
         rsvpTitle: 'RSVP',
-        rsvpSubtitle: 'Bitte antworte bis zum 15. Juli 2026',
+        rsvpSubtitle: 'Bitte antworte bis zum 30. Juni 2026',
         
         // Form Labels
         nameLabel: 'Dein Name',
@@ -73,7 +73,7 @@ const translations = {
         
         // RSVP Section
         rsvpTitle: 'RSVP',
-        rsvpSubtitle: 'Please respond by July 15, 2026',
+        rsvpSubtitle: 'Please respond by June 30, 2026',
         
         // Form Labels
         nameLabel: 'Your Name',
@@ -126,7 +126,7 @@ const translations = {
         
         // RSVP Section
         rsvpTitle: 'OSA',
-        rsvpSubtitle: 'Vänligen svara senast 15 juli 2026',
+        rsvpSubtitle: 'Vänligen svara senast 30 juni 2026',
         
         // Form Labels
         nameLabel: 'Ditt Namn',
