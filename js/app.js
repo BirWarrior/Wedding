@@ -50,7 +50,7 @@
     function init() {
         // Check if user already submitted RSVP
         if (hasAlreadySubmitted()) {
-            showThankYouMessage('Du hast bereits geantwortet.', null, false);
+            showThankYouMessage(window.i18n.t('thankYouAlreadySubmitted'), null, false);
             return;
         }
 
@@ -105,7 +105,7 @@
         const honeypot = form.querySelector('input[name="website"]');
         if (honeypot && honeypot.value !== '') {
             // Likely a bot, silently "succeed"
-            showThankYouMessage('Vielen Dank für deine Antwort!');
+            showThankYouMessage(window.i18n.t('thankYouHoneypot'));
             return;
         }
         
@@ -133,22 +133,18 @@
                 // Show thank you message based on response
                 if (selectedResponse === 'yes') {
                     const isMultiple = formData.guestCount > 1;
-                    const message = isMultiple 
-                        ? 'Wunderbar! Wir freuen uns auf euch!'
-                        : 'Wunderbar! Wir freuen uns auf dich!';
-                    const subtitle = isMultiple
-                        ? 'Schön, dass ihr dabei seid!'
-                        : 'Schön, dass du dabei bist!';
+                    const message = window.i18n.t(isMultiple ? 'thankYouYesMultiple' : 'thankYouYesSingle');
+                    const subtitle = window.i18n.t(isMultiple ? 'subtitleYesMultiple' : 'subtitleYesSingle');
                     showThankYouMessage(message, subtitle);
                 } else {
-                    showThankYouMessage('Schade, dass du nicht dabei sein kannst.', 'Wir werden dich vermissen!');
+                    showThankYouMessage(window.i18n.t('thankYouNo'), window.i18n.t('subtitleNo'));
                 }
             } else {
                 throw new Error(response.error || 'Submission failed');
             }
         } catch (error) {
             console.error('RSVP submission error:', error);
-            showError('Es gab einen Fehler. Bitte versuche es später erneut.');
+            showError(window.i18n.t('errorSubmission'));
             setLoading(false);
         }
     }
@@ -191,13 +187,13 @@
         const nameInput = document.getElementById('guest-name');
         
         if (nameInput.value.trim() === '') {
-            showError('Bitte gib deinen Namen ein.');
+            showError(window.i18n.t('errorNameRequired'));
             nameInput.focus();
             return false;
         }
         
         if (selectedResponse === null) {
-            showError('Bitte wähle, ob du kommst oder nicht.');
+            showError(window.i18n.t('errorResponseRequired'));
             return false;
         }
         
@@ -293,7 +289,19 @@
     
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize language first
+            if (window.i18n && window.i18n.initLanguage) {
+                window.i18n.initLanguage();
+            }
+            // Then initialize form
+            init();
+        });
+            // Initialize language first
+            if (window.i18n && window.i18n.initLanguage) {
+                window.i18n.initLanguage();
+            }
+            // Then initialize form
     } else {
         init();
     }

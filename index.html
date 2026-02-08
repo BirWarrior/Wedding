@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +13,27 @@
     
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Language Script (load first) -->
+    <script src="js/language.js"></script>
 </head>
 <body>
     <!-- Hero Section with Background Image -->
     <section class="hero" id="hero">
         <!-- You can add your own image: replace the background-image in CSS or add an <img> here -->
         <div class="hero-overlay"></div>
+        
+                <!-- Language Menu -->
+                <div class="language-menu" id="language-menu">
+                    <button class="lang-toggle" id="lang-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Language menu">
+                        <span class="burger" aria-hidden="true"></span>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown" hidden>
+                        <button class="lang-btn" data-lang="de">Deutsch</button>
+                        <button class="lang-btn" data-lang="en">English</button>
+                        <button class="lang-btn" data-lang="sv">Svenska</button>
+                    </div>
+                </div>
         
         <!-- Invitation Card -->
         <div class="invitation-card">
@@ -34,14 +49,18 @@
                 
                 <!-- Wedding Date -->
                 <div class="wedding-date">
-                    <p class="date">19. July 2026</p>
-                    <p class="time">17:00 Uhr</p>
+                    <p class="date" data-i18n="date">19. Juli 2026</p>
+                    <p class="time" data-i18n="time">17:00 Uhr</p>
                 </div>
                 
                 <!-- Invitation Text -->
                 <div class="invitation-text">
-                    <p>Wir freuen uns, euch zu unserer Hochzeit einzuladen!</p>
-                    <p class="location">Le Royale <br> Hermann-Buck-Weg 9, 22309 Hamburg</p>
+                    <p data-i18n="invitationText">Wir freuen uns, euch zu unserer Hochzeit einzuladen!</p>
+                    <p class="location">
+                        <a href="https://maps.google.com/?q=Le+Royale,+Hermann-Buck-Weg+9,+22309+Hamburg" target="_blank" rel="noopener">
+                            <span data-i18n="locationName">Le Royale</span> <br> <span data-i18n="locationAddress">Hermann-Buck-Weg 9, 22309 Hamburg</span>
+                        </a>
+                    </p>
                 </div>
                 
                 <!-- Divider -->
@@ -49,35 +68,36 @@
                 
                 <!-- RSVP Section -->
                 <div class="rsvp-section" id="rsvp-section">
-                    <h2>RSVP</h2>
-                    <p class="rsvp-subtitle">Bitte antworte bis zum 15. Juli 2026</p>
+                    <h2 data-i18n="rsvpTitle">RSVP</h2>
+                    <p class="rsvp-subtitle" data-i18n="rsvpSubtitle">Bitte antworte bis zum 15. Juli 2026</p>
                     
                     <!-- RSVP Form -->
                     <form id="rsvp-form" class="rsvp-form">
                         <!-- Name Input -->
                         <div class="form-group">
-                            <label for="guest-name">Dein Name</label>
+                            <label for="guest-name" data-i18n="nameLabel">Dein Name</label>
                             <input 
                                 type="text" 
                                 id="guest-name" 
                                 name="name" 
                                 required 
                                 placeholder="Vor- und Nachname"
+                                data-i18n="namePlaceholder"
                                 autocomplete="name"
                             >
                         </div>
                         
                         <!-- RSVP Buttons -->
                         <div class="form-group">
-                            <label>Kommst du?</label>
+                            <label data-i18n="attendingLabel">Kommst du?</label>
                             <div class="rsvp-buttons">
                                 <button type="button" class="rsvp-btn" id="btn-yes" data-response="yes">
                                     <span class="btn-icon">✓</span>
-                                    <span>Ja, ich komme</span>
+                                    <span data-i18n="btnYes">Ja, ich komme</span>
                                 </button>
                                 <button type="button" class="rsvp-btn" id="btn-no" data-response="no">
                                     <span class="btn-icon">✗</span>
-                                    <span>Leider nicht</span>
+                                    <span data-i18n="btnNo">Leider nicht</span>
                                 </button>
                             </div>
                             <input type="hidden" id="rsvp-response" name="rsvp" required>
@@ -85,13 +105,13 @@
                         
                         <!-- Guest Count (visible only when "Yes" is selected) -->
                         <div class="form-group guest-count-group" id="guest-count-group" style="display: none;">
-                            <label for="guest-count">Anzahl der Gäste</label>
+                            <label for="guest-count" data-i18n="guestCountLabel">Anzahl der Gäste</label>
                             <select id="guest-count" name="guestCount">
-                                <option value="1">1 Person</option>
-                                <option value="2">2 Personen</option>
-                                <option value="3">3 Personen</option>
-                                <option value="4">4 Personen</option>
-                                <option value="5">5 Personen</option>
+                                <option value="1" data-i18n="person1">1 Person</option>
+                                <option value="2" data-i18n="person2">2 Personen</option>
+                                <option value="3" data-i18n="person3">3 Personen</option>
+                                <option value="4" data-i18n="person4">4 Personen</option>
+                                <option value="5" data-i18n="person5">5 Personen</option>
                             </select>
                         </div>
                         
@@ -102,10 +122,10 @@
                         
                         <!-- Submit Button -->
                         <button type="submit" class="submit-btn" id="submit-btn" disabled>
-                            <span class="btn-text">RSVP absenden</span>
+                            <span class="btn-text" data-i18n="submitBtn">RSVP absenden</span>
                             <span class="btn-loading" style="display: none;">
                                 <span class="spinner"></span>
-                                Wird gesendet...
+                                <span data-i18n="sending">Wird gesendet...</span>
                             </span>
                         </button>
                         
@@ -117,8 +137,8 @@
                 <!-- Thank You Message (hidden by default) -->
                 <div class="thank-you-section" id="thank-you-section" style="display: none;">
                     <div class="thank-you-icon" id="thank-you-icon">♥</div>
-                    <h2>Vielen Dank!</h2>
-                    <p class="thank-you-message" id="thank-you-message">
+                    <h2 data-i18n="thankYouTitle">Vielen Dank!</h2>
+                    <p class="thank-you-message" id="thank-you-message" data-i18n="thankYouDefault">
                         Deine Antwort wurde gespeichert.
                     </p>
                     <p class="thank-you-subtitle" id="thank-you-subtitle">Wir freuen uns auf dich!</p>
@@ -129,7 +149,7 @@
     
     <!-- Footer -->
     <footer class="footer">
-        <p>Bei Fragen erreichst du uns unter: <a href="tel:+491732569421">+49 1732569421</a></p>
+        <p><span data-i18n="footerContact">Bei Fragen erreichst du uns unter:</span> <a href="tel:+491732569421">+49 1732569421</a></p>
     </footer>
 
     <!-- JavaScript -->
