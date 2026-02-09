@@ -81,6 +81,16 @@
             color: white;
         }
 
+        .stat-card.me {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+        }
+
+        .stat-card.wife {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+
         .stat-label {
             font-size: 0.9rem;
             opacity: 0.9;
@@ -226,9 +236,100 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Login Modal Styles */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-box h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .login-error {
+            color: #c0392b;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-box">
+            <h2>🔐 Dashboard Access</h2>
+            <p>Enter password to view RSVP statistics</p>
+            <div id="loginError" class="login-error" style="display: none;"></div>
+            <input 
+                type="password" 
+                id="passwordInput" 
+                class="login-input" 
+                placeholder="Enter password" 
+                onkeypress="if(event.key==='Enter') checkPassword()"
+            >
+            <button class="login-btn" onclick="checkPassword()">Access Dashboard</button>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>🎉 Wedding RSVP Dashboard</h1>
@@ -265,6 +366,18 @@
                     <div class="stat-label">Total Guests</div>
                     <div class="stat-value" id="total-guests">0</div>
                     <div class="stat-subtext">attending</div>
+                </div>
+
+                <div class="stat-card me">
+                    <div class="stat-label">From Your Side</div>
+                    <div class="stat-value" id="from-me-count">0</div>
+                    <div class="stat-subtext" id="from-me-percentage">0%</div>
+                </div>
+
+                <div class="stat-card wife">
+                    <div class="stat-label">From Wife's Side</div>
+                    <div class="stat-value" id="from-wife-count">0</div>
+                    <div class="stat-subtext" id="from-wife-percentage">0%</div>
                 </div>
             </div>
 
@@ -325,6 +438,10 @@
                 document.getElementById('yes-percentage').textContent = data.yesPercentage + '%';
                 document.getElementById('no-percentage').textContent = data.noPercentage + '%';
                 document.getElementById('total-guests').textContent = data.totalGuests;
+                document.getElementById('from-me-count').textContent = data.fromMeCount || 0;
+                document.getElementById('from-me-percentage').textContent = (data.mePercentage || 0) + '%';
+                document.getElementById('from-wife-count').textContent = data.fromWifeCount || 0;
+                document.getElementById('from-wife-percentage').textContent = (data.wifePercentage || 0) + '%';
 
                 // Update progress bar
                 const progressYes = document.getElementById('progress-yes');
@@ -357,10 +474,39 @@
             }
         }
 
-        // Load stats when page loads
-        loadStats();
+        // ========================================
+        // Password Protection
+        // ========================================
+        const DASHBOARD_PASSWORD = 'leroyale';
 
-        // Auto-refresh every 30 seconds
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const loginError = document.getElementById('loginError');
+            const password = passwordInput.value.trim();
+
+            if (password === DASHBOARD_PASSWORD) {
+                // Password correct - hide login, show dashboard
+                document.getElementById('loginModal').style.display = 'none';
+                loadStats();
+            } else {
+                // Password wrong - show error
+                loginError.style.display = 'block';
+                loginError.textContent = '❌ Wrong password. Try again.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // Focus on password input when page loads
+        window.addEventListener('load', () => {
+            document.getElementById('passwordInput').focus();
+        });
+
+        // Load stats when page loads
+        // Commented out - will be called after password check
+        // loadStats();
+
+        // Auto-refresh every 30 seconds (only after authentication)
         setInterval(loadStats, 30000);
     </script>
 </body>
